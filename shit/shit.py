@@ -11,7 +11,7 @@ class Shit:
 
     def __init__(self, bot):
         self.bot = bot
-        default_guild = {"shit":False}
+        default_guild = {"enabled":False, "frequency": 150}
         self.config = Config.get_conf(self, 18107945176)
         self.config.register_guild(**default_guild)
 
@@ -19,11 +19,12 @@ class Shit:
         guild = message.guild
         channel = message.channel
         author = message.author
-        randomInt = randint(0, 150)
+        max = await self.config.guild(guild).frequency()
+        randomInt = randint(0, max)
         if message.author.bot:
             return
         if randomInt == 1:
-            if await self.config.guild(guild).shit():
+            if await self.config.guild(guild).enabled():
                 directory = str(bundled_data_path(self))
                 files = glob.glob(directory + "/*")
                 file = discord.File(choice(files))
@@ -31,12 +32,23 @@ class Shit:
 
     @commands.command(pass_context=True)
     @checks.mod_or_permissions(manage_channels=True)
-    async def shit(self, ctx):
-        """on/off """
+    async def shittoggle(self, ctx):
+        """on/off"""
         guild = ctx.message.guild
-        if not await self.config.guild(guild).shit():
-            await self.config.guild(guild).shit.set(True)
+        if not await self.config.guild(guild).enabled():
+            await self.config.guild(guild).enabled.set(True)
             await ctx.send("on")
         else:
-            await self.config.guild(guild).shit.set(False)
+            await self.config.guild(guild).enabled.set(False)
             await ctx.send("off")
+
+    @commands.command(pass_context=True)
+    @checks.mod_or_permissions(manage_channels=True)
+    async def shitfreq(self, ctx, frequency:int=150):
+        """frequency"""
+        guild = ctx.message.guild
+        if not await self.config.guild(guild).enabled():
+            await ctx.send("I'm not setup on this guild!")
+            return
+        await self.config.guild(guild).frequency.set(frequency)
+        await ctx.send("Frequency set to {}.".format(frequency))
