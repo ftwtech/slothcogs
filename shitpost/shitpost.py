@@ -54,7 +54,7 @@ class Shitpost:
 
     @shitpost.command(pass_context=True)
     @checks.is_owner()
-    async def frequency(self, ctx, frequency:int=150):
+    async def frequency(self, ctx, frequency:int=100):
         """frequency"""
         guild = ctx.message.guild
         if not await self.config.guild(guild).enabled():
