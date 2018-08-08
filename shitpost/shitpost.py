@@ -38,7 +38,7 @@ class Shitpost:
     async def shitpost(self, ctx):
         """Shitpost for yout momma"""
         if ctx.invoked_subcommand is None:
-            await ctx.invoke(self.listimages_guild)
+            await ctx.send("Try adding a sub-command, you stupid homo")
                 
     @shitpost.command(pass_context=True)
     @checks.is_owner()
