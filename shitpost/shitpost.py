@@ -1,11 +1,11 @@
 import discord
 import glob
-from .responses import responses
 from discord.ext import commands
 from redbot.core import Config
 from redbot.core import checks
 from random import randint, choice
 from redbot.core.data_manager import bundled_data_path
+from bundled_data_path.responses import responses
 
 class Shitpost:
     """Shitpost"""
