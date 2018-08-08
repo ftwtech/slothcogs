@@ -1,5 +1,6 @@
 import discord
 import glob
+from .responses import responses
 from discord.ext import commands
 from redbot.core import Config
 from redbot.core import checks
@@ -38,7 +39,7 @@ class Shitpost:
     async def shitpost(self, ctx):
         """Shitpost for yout momma"""
         if ctx.invoked_subcommand is None:
-            await ctx.send("Try adding a sub-command, you stupid homo")
+            await ctx.send("Try adding a sub-command, you dumb homo")
                 
     @shitpost.command(pass_context=True)
     @checks.is_owner()
