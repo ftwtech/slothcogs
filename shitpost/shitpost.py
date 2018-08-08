@@ -30,6 +30,10 @@ class Shitpost:
             return
         if message.author.bot:
             return
+        if "ayyy" in msg.lower():
+            if await self.config.guild(guild).ayyy():
+                file = discord.File(str(bundled_data_path(self)) + "/lmao.jpg")
+                await channel.send(file=file)
         if randomInt == 0:
             await channel.send(msg + choice(responses))
         if randomInt == 1:
