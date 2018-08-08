@@ -1,17 +1,17 @@
 import discord
-from .responses import responses
+import glob
 from discord.ext import commands
 from redbot.core import Config
 from redbot.core import checks
-from random import randint
-from random import choice
+from random import randint, choice
+from redbot.core.data_manager import bundled_data_path
 
-class Respond:
-    """Responding to random shit"""
+class Shitpost:
+    """Shitpost"""
 
     def __init__(self, bot):
         self.bot = bot
-        default_guild = {"enabled":False, "frequency": 250}
+        default_guild = {"enabled":False, "frequency": 100}
         self.config = Config.get_conf(self, 18107945176)
         self.config.register_guild(**default_guild)
 
@@ -20,17 +20,29 @@ class Respond:
         channel = message.channel
         author = message.author
         msg = ' '
+        directory = str(bundled_data_path(self))
+        files = glob.glob(directory + "/pics/*")
+        file = discord.File(choice(files))
         max = await self.config.guild(guild).frequency()
         randomInt = randint(0, max)
+        if not await self.config.guild(guild).enabled():
+            return
         if message.author.bot:
             return
+        if randomInt == 0:
+            await channel.send(msg + choice(responses))
         if randomInt == 1:
-            if await self.config.guild(guild).enabled():
-                await channel.send(msg + choice(responses))
+            await channel.send(file=file)
 
-    @commands.command(pass_context=True)
-    @checks.mod_or_permissions(manage_channels=True)
-    async def respondtoggle(self, ctx):
+    @commands.group(pass_context=True, invoke_without_command=True)
+    async def shitpost(self, ctx):
+        """Shitpost for yout momma"""
+        if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.listimages_guild)
+                
+    @shitpost.command(pass_context=True)
+    @checks.is_owner()
+    async def toggle(self, ctx):
         """on/off"""
         guild = ctx.message.guild
         if not await self.config.guild(guild).enabled():
@@ -40,9 +52,9 @@ class Respond:
             await self.config.guild(guild).enabled.set(False)
             await ctx.send("off")
 
-    @commands.command(pass_context=True)
-    @checks.mod_or_permissions(manage_channels=True)
-    async def respondfreq(self, ctx, frequency:int=250):
+    @shitpost.command(pass_context=True)
+    @checks.is_owner()
+    async def frequency(self, ctx, frequency:int=150):
         """frequency"""
         guild = ctx.message.guild
         if not await self.config.guild(guild).enabled():
