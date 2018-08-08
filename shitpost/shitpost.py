@@ -20,10 +20,6 @@ class Shitpost:
         guild = message.guild
         channel = message.channel
         author = message.author
-        msg = ' '
-        directory = str(bundled_data_path(self))
-        files = glob.glob(directory + "/pics/*")
-        file = discord.File(choice(files))
         max = await self.config.guild(guild).frequency()
         randomInt = randint(0, max)
         if not await self.config.guild(guild).enabled():
@@ -31,11 +27,15 @@ class Shitpost:
         if message.author.bot:
             return
         if "ayyy" in msg.lower():
-            file = discord.File(str(bundled_data_path(self)) + "/lmao.jpg")
+            file = discord.File(str(bundled_data_path(self)) + "/reacts/lmao.jpg")
             await channel.send(file=file)
         if randomInt == 0:
+            msg = ' '
             await channel.send(msg + choice(responses))
         if randomInt == 1:
+            directory = str(bundled_data_path(self))
+            files = glob.glob(directory + "/pics/*")
+            file = discord.File(choice(files))
             await channel.send(file=file)
 
     @commands.group(pass_context=True, invoke_without_command=True)
