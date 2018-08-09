@@ -30,7 +30,7 @@ class Shitpost:
             return
         if message.author.bot:
             return
-        if "ayyy" in msg.lower():
+        if "ayyy" in message.content.lower():
             react = discord.File(str(bundled_data_path(self)) + "/reacts/lmao.jpg")
             await channel.send(file=react)
         if randomInt == 0:
