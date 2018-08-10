@@ -30,11 +30,6 @@ class Shitpost:
             return
         if message.author.bot:
             return
-        if "nigga" in message.content.lower():
-            await channel.send("*nigger")
-        if "ayyy" in message.content.lower():
-            react = discord.File(str(bundled_data_path(self)) + "/reacts/lmao.jpg")
-            await channel.send(file=react)
         if randomInt == 0:
             await channel.send(msg + choice(responses))
         if randomInt == 1:
