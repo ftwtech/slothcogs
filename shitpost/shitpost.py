@@ -22,7 +22,7 @@ class Shitpost:
         author = message.author
         msg = ' '
         directory = str(bundled_data_path(self))
-        files = glob.glob(directory + "/pics/*")
+        files = glob.glob(directory + "/*")
         file = discord.File(choice(files))
         max = await self.config.guild(guild).frequency()
         randomInt = randint(0, max)
