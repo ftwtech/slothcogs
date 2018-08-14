@@ -1,5 +1,6 @@
 import discord
 import glob
+import aiohttp
 from .responses import responses
 from discord.ext import commands
 from redbot.core import Config
@@ -12,6 +13,7 @@ class Shitpost:
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = aiohttp.ClientSession(loop=self.bot.loop)
         default_guild = {"enabled":False, "frequency": 100}
         self.config = Config.get_conf(self, 18107945176)
         self.config.register_guild(**default_guild)
@@ -35,12 +37,27 @@ class Shitpost:
         if randomInt == 1:
             await channel.send(file=file)
 
-    @commands.group(pass_context=True, invoke_without_command=True)
+    @commands.group(hidden=True, pass_context=True, invoke_without_command=True)
     async def shitpost(self, ctx):
         """Shitpost for yout momma"""
         if ctx.invoked_subcommand is None:
             await ctx.send("Try adding a sub-command, you dumb homo")
-                
+
+    @shitpost.command(pass_context=True)
+    @checks.is_owner()
+    async def add(self, ctx):
+        """Add an image to shitpost with"""
+        channel = ctx.message.channel
+        msg = ctx.message
+        filename = "{}".format(msg.attachments[0].filename)
+        directory = str(bundled_data_path(self))
+        file_path = "{}/{}".format(str(directory), filename)
+        async with self.session.get(msg.attachments[0].url) as resp:
+            test = await resp.read()
+            with open(file_path, "wb") as f:
+                f.write(test)
+        await ctx.send("added")
+            
     @shitpost.command(pass_context=True)
     @checks.is_owner()
     async def toggle(self, ctx):
