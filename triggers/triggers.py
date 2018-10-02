@@ -26,6 +26,9 @@ class Triggers:
         if "ayyy" in message.content.lower():
             react = discord.File(str(bundled_data_path(self)) + "/lmao.jpg")
             await channel.send(file=react)
+        if "fuck" in message.content.lower():
+            react = discord.File(str(bundled_data_path(self)) + "/christian.jpg")
+            await channel.send(file=react)
 
     @commands.command(pass_context=True)
     @checks.is_owner()
