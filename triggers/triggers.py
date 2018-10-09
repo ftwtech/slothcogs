@@ -4,7 +4,7 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 
-class Triggers:
+class Triggers(getattr(commands, "Cog", object)):
     """TRIGGERS"""
 
     def __init__(self, bot):

@@ -8,7 +8,7 @@ from random import randint, choice
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 
-class Shitpost:
+class Shitpost(getattr(commands, "Cog", object)):
     """Shitpost"""
 
     def __init__(self, bot):
